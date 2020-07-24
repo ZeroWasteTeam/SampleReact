@@ -24,6 +24,8 @@ jobs:
       - name: Docker Publish
         run: |
             REPOSITORY_NAME_IN_SMALL=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
-            IMAGE_ID=docker.pkg.github.com/$REPOSITORY_NAME_IN_SMALL/mdoc-nodejs
+            IMAGE_ID=docker.pkg.github.com/$REPOSITORY_NAME_IN_SMALL/sample-react
             docker tag image $IMAGE_ID:${{ github.sha }}
             docker push $IMAGE_ID:${{ github.sha }}
+
+
