@@ -1,0 +1,29 @@
+name: MasterBuild
+
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs: 
+  master-build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+ 
+      - name: Docker Build
+        run: docker build -t image .
+        
+        
+      - name: Log into registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+
+      - name: Docker Publish
+        working-directory: sample-app
+        run: |
+            REPOSITORY_NAME_IN_SMALL=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
+            IMAGE_ID=docker.pkg.github.com/$REPOSITORY_NAME_IN_SMALL/mdoc-nodejs
+            docker tag image $IMAGE_ID:${{ github.sha }}
+            docker push $IMAGE_ID:${{ github.sha }}
