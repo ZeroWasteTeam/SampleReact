@@ -12,21 +12,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
- 
-      - name: Docker Build
-        working-directory: ./sample-app
-        run: docker build -t image .
-        
-        
+
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+ 
 
       - name: Docker Publish
+        working-directory: ./sample-app
         run: |
             REPOSITORY_NAME_IN_SMALL=$(echo "$GITHUB_REPOSITORY" | tr '[:upper:]' '[:lower:]')
             IMAGE_ID=docker.pkg.github.com/$REPOSITORY_NAME_IN_SMALL/sample-react
-            docker tag image $IMAGE_ID:${{ github.sha }} 
-            docker tag image $IMAGE_ID:latest
-            docker push $IMAGE_ID:${{ github.sha }} $IMAGE_ID:latest
+            docker build -t $IMAGE_ID:${{ github.sha }} -t $IMAGE_ID:latest .
+            docker push $IMAGE_ID
 
 
