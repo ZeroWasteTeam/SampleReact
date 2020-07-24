@@ -1,6 +1,3 @@
-var Config = {
-  siteName: "Google",
-  siteAddress: "https://www.google.com",
-};
+var Config = window.config;
 
 export default Config;
