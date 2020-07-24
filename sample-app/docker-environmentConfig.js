@@ -1,4 +1,4 @@
 var config = {
-  siteName: "View Linked In",
+  siteName: "Facebook",
   siteAddress: "https://www.linkedin.com/"
 };

@@ -1,7 +1,0 @@
-docker build -t reactapp .
-
-docker run --name reactdemo -d -p 8000:80 -v D:\ZeroWasteTeams\SampleReact\sample-app\deploy\environmentConfig.js:/usr/share/nginx/html/environmentConfig.js  reactapp
-
-docker create --name reactdemo -p 8000:80 reactapp
-docker cp environmentConfig.js reactdemo:/usr/share/nginx/html/environmentConfig.js
-docker start reactdemo
