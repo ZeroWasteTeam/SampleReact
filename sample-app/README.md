@@ -1,68 +1,39 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Demo React Application
 
-## Available Scripts
+## About
 
-In the project directory, you can run:
+The project demonstrates how to dockerize a react application with external configs.
 
-### `npm start`
+The following could be said about building react application naively
+ * The configuration files for different environments are in the code
+ * While building the application, the environment name is specified.
+ * In the build procss, based on the environment name specified, the environment file is selected
+ * The selected configuration file and the code is minified together. This output is specific for an environment
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The problem with the naive approach
+ * The build is per environment. So for every environment the code has to be built
+ * When a environement configuration is changed, the code has to be rebuilt
+ * This does not fit 'build once deploy many' 
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+What's done in this project
+ * The react application is dockeized with local configuration
+ * The configuration file is not minified in the build process
+ * There is a mechanism to modify the config before the deployment process
+ 
+## Scripts Available
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Local
+ * Prerequisite : npm is installed
+ * npm start - server the application in localhost:3000
+ * npm run build - builds the application
+ * ~/sample-app/public/environmentConfig.js config file for local development
+ 
+### Docker
+ * Prerequisite : docker is installed
+ * `docker-local-image-build.sh` script to build docker image locally
+ * On commit and push, github actions is triggered and docker image is built and pushed to docker packages
+ * `docker-local-image-build.sh` script to build the local image
+ * `docker-local-image-run.sh` script to run the local container
+ * `docker-local-image-stop.sh` script to stop the local container
+ * `docker-github-image-run.sh` script to pull the docker image from github packages and run locally
+ * `~/sample-app/docker-environmentConfig.js` configuration file for dockerized application
